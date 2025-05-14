@@ -6,10 +6,10 @@ class FirstLaunchChecker extends StatelessWidget {
   final Widget onboardingWidget;
 
   const FirstLaunchChecker({
-    Key? key,
+    super.key,
     required this.homeWidget,
     required this.onboardingWidget,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
