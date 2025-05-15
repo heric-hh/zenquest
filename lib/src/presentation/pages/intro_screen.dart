@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zenquest/src/config/theme/colors/colors.dart';
-import 'package:zenquest/src/presentation/pages/home_screen.dart';
+import 'package:zenquest/src/config/theme/colors/app_colors.dart';
+import 'package:zenquest/src/presentation/pages/profile_screen.dart';
 
 class IntroScreen extends StatelessWidget {
   const IntroScreen({super.key});
@@ -53,7 +53,7 @@ class IntroScreen extends StatelessWidget {
                   // Navegar a la siguiente pantalla
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    MaterialPageRoute(builder: (context) => ProfileScreen()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
