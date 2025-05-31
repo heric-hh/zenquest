@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zenquest/src/config/theme/colors/app_colors.dart';
+import 'package:zenquest/src/presentation/widgets/region_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -54,44 +55,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 12),
 
             // Card Swiper - Regiones
-            Expanded(
-              child: PageView.builder(
-                itemCount: 7, // Puedes cambiar esto según tus regiones
-                controller: PageController(viewportFraction: 0.8),
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 40),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF2B335B),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withAlpha(10),
-                            blurRadius: 20,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Región ${index + 1}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+            Expanded(child: RegionCardSwiper()),
           ],
         ),
       ),
