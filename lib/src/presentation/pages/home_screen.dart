@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primaryColor, // fondo oscuro
+      backgroundColor: AppColors.primaryColor,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,37 +39,52 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 16),
 
             // Mapa emocional
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: const Text(
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
                 'Mapa Emocional',
                 style: TextStyle(
                   fontSize: 20,
-                  fontFamily: 'PressStart2P', // si usas fuente pixel
+                  fontFamily: 'PressStart2P',
                   color: Colors.white,
                 ),
               ),
             ),
             const SizedBox(height: 12),
 
-            // Regiones (placeholder)
+            // Card Swiper - Regiones
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: GridView.count(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  children: List.generate(
-                    3,
-                    (index) => Container(
+              child: PageView.builder(
+                itemCount: 5, // Puedes cambiar esto según tus regiones
+                controller: PageController(viewportFraction: 0.8),
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Container(
                       decoration: BoxDecoration(
                         color: const Color(0xFF2B335B),
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withAlpha(10),
+                            blurRadius: 20,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Región ${index + 1}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
             ),
           ],
@@ -88,7 +103,7 @@ class AppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      color: AppColors.secondaryColor, // color crema
+      color: AppColors.secondaryColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -108,7 +123,7 @@ class AppBar extends StatelessWidget {
                     ),
                   ),
                   const Text(
-                    'Nivel 6', //TODO: Cambiar a nivel dinámico
+                    'Nivel 6', // TODO: Cambiar a nivel dinámico
                     style: TextStyle(color: Colors.black54),
                   ),
                 ],
