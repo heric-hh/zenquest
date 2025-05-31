@@ -40,13 +40,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
             // Mapa emocional
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                'Mapa Emocional',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: 'PressStart2P',
-                  color: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Mapa Emocional',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -55,12 +59,13 @@ class _HomeScreenState extends State<HomeScreen> {
             // Card Swiper - Regiones
             Expanded(
               child: PageView.builder(
-                itemCount: 5, // Puedes cambiar esto según tus regiones
+                itemCount: 7, // Puedes cambiar esto según tus regiones
                 controller: PageController(viewportFraction: 0.8),
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Container(
+                      margin: const EdgeInsets.only(bottom: 40),
                       decoration: BoxDecoration(
                         color: const Color(0xFF2B335B),
                         borderRadius: BorderRadius.circular(20),
@@ -136,7 +141,7 @@ class AppBar extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.w500),
           ),
           const SizedBox(height: 8),
-          // GoToTaskWidget(),
+          GoToTaskWidget(),
         ],
       ),
     );
@@ -162,7 +167,7 @@ class GoToTaskWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
               Text(
-                'Bosque del Ruido',
+                'Bosque del Ruido', // TODO: Cambiar a tarea dinámica
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -175,10 +180,17 @@ class GoToTaskWidget extends StatelessWidget {
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF1B1E3D),
+              backgroundColor: AppColors.primaryColor,
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
-            child: const Text('Continuar'),
+            child: const Text(
+              'Continuar',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),

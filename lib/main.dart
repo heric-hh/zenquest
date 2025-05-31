@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:zenquest/src/config/theme/colors/app_colors.dart';
 import 'package:zenquest/src/core/utils/first_launch_checker.dart';
 import 'package:zenquest/src/presentation/navigation/main_navigation.dart';
-import 'package:zenquest/src/presentation/pages/home_screen.dart';
 import 'package:zenquest/src/presentation/pages/intro_screen.dart';
 
 void main() {
