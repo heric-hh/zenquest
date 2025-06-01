@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zenquest/src/config/theme/colors/app_colors.dart';
+import 'package:zenquest/src/presentation/regions/bosque_del_ruido/bdr_task_detail.dart';
 
 class RegionMapScreen extends StatelessWidget {
   const RegionMapScreen({super.key});
@@ -47,8 +48,19 @@ class RegionMapScreen extends StatelessWidget {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.pop(context);
-                  //TODO:  Aquí iría tu lógica para ir a la pantalla de tarea
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (_) => BDRTaskDetailScreen(
+                            title: 'El susurro del juicio',
+                            description:
+                                'Durante 3 minutos, escucha tus pensamientos sin juzgarlos.',
+                            instruction:
+                                'Escribe lo que aparezca sin filtros ni correcciones.',
+                          ),
+                    ),
+                  );
                 },
                 child: const Text(
                   'Comenzar',
