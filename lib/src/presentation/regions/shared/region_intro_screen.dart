@@ -7,8 +7,13 @@ import 'package:zenquest/src/presentation/regions/bosque_del_ruido/region_map_sc
 
 class RegionIntroScreen extends StatefulWidget {
   final String regionName;
+  final String regionId;
 
-  const RegionIntroScreen({super.key, required this.regionName});
+  const RegionIntroScreen({
+    super.key,
+    required this.regionName,
+    required this.regionId,
+  });
 
   @override
   State<RegionIntroScreen> createState() => _RegionIntroScreenState();
@@ -38,7 +43,7 @@ class _RegionIntroScreenState extends State<RegionIntroScreen> {
       final response = await http.post(
         Uri.parse(_apiEndpoint),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'unlockedZoneId': 'CH-1'}),
+        body: jsonEncode({'unlockedZoneId': widget.regionId}),
       );
 
       if (response.statusCode == 200) {

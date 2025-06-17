@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zenquest/src/presentation/regions/region_intro_screen.dart';
+import 'package:zenquest/src/presentation/regions/shared/region_intro_screen.dart';
 
 class RegionCardSwiper extends StatefulWidget {
   const RegionCardSwiper({super.key});
@@ -11,11 +11,11 @@ class RegionCardSwiper extends StatefulWidget {
 class _RegionCardSwiperState extends State<RegionCardSwiper> {
   final PageController _controller = PageController(viewportFraction: 0.75);
 
-  final List<String> regions = const [
-    'Bosque del Ruido',
-    'Montaña del Miedo',
-    'Llanura del Recuerdo',
-  ];
+  final Map<String, String> regions = {
+    'Bosque del Ruido': 'CH-1',
+    'Montaña del Miedo': 'CH-2',
+    'Llanura del Recuerdo': 'CH-3',
+  };
 
   @override
   void dispose() {
@@ -25,10 +25,12 @@ class _RegionCardSwiperState extends State<RegionCardSwiper> {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> regionsNames = regions.keys.toList();
     return PageView.builder(
       controller: _controller,
       itemCount: regions.length,
       itemBuilder: (context, index) {
+        final String currentRegionName = regionsNames[index];
         return AnimatedBuilder(
           animation: _controller,
           builder: (context, child) {
@@ -45,7 +47,10 @@ class _RegionCardSwiperState extends State<RegionCardSwiper> {
                     context,
                     MaterialPageRoute(
                       builder:
-                          (_) => RegionIntroScreen(regionName: regions[index]),
+                          (_) => RegionIntroScreen(
+                            regionName: currentRegionName,
+                            regionId: regions[currentRegionName]!,
+                          ),
                     ),
                   );
                 },
@@ -69,7 +74,7 @@ class _RegionCardSwiperState extends State<RegionCardSwiper> {
                     ),
                     child: Center(
                       child: Text(
-                        regions[index],
+                        regionsNames[index],
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 16,

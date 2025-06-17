@@ -24,9 +24,6 @@ class _BDRTaskDetailScreenState extends State<BDRTaskDetailScreen> {
   late final Stopwatch _stopwatch;
 
   @override
-  /// Initializes the state of the widget.
-  /// This function is called when the widget is inserted into the tree.
-  /// It initializes the stopwatch to zero.
   void initState() {
     super.initState();
     _stopwatch = Stopwatch();
@@ -43,12 +40,22 @@ class _BDRTaskDetailScreenState extends State<BDRTaskDetailScreen> {
   void _tick() async {
     while (_stopwatch.isRunning && _remainingSeconds > 0) {
       await Future.delayed(const Duration(seconds: 1));
+      if (!mounted) return;
       setState(() {
         _remainingSeconds--;
       });
     }
+
     if (_remainingSeconds <= 0) {
       _stopwatch.stop();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('⏳ ¡El tiempo ha terminado!'),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
     }
   }
 
@@ -63,15 +70,25 @@ class _BDRTaskDetailScreenState extends State<BDRTaskDetailScreen> {
       context: context,
       builder:
           (_) => AlertDialog(
-            title: const Text("¡Tarea completada!"),
-            content: const Text("Has dado un paso más en tu camino."),
+            backgroundColor: const Color(0xFF1B1E3D),
+            title: const Text(
+              "🎉 ¡Tarea completada!",
+              style: TextStyle(color: Colors.white),
+            ),
+            content: const Text(
+              "Has dado un paso más en tu camino.",
+              style: TextStyle(color: Colors.white70),
+            ),
             actions: [
               TextButton(
                 onPressed:
                     () => Navigator.of(
                       context,
                     ).popUntil((route) => route.isFirst),
-                child: const Text("Volver al mapa"),
+                child: const Text(
+                  "Volver al mapa",
+                  style: TextStyle(color: Colors.greenAccent),
+                ),
               ),
             ],
           ),
@@ -103,6 +120,8 @@ class _BDRTaskDetailScreenState extends State<BDRTaskDetailScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 500),
+          switchInCurve: Curves.easeIn,
+          switchOutCurve: Curves.easeOut,
           child:
               !_exerciseStarted
                   ? Column(
@@ -125,6 +144,9 @@ class _BDRTaskDetailScreenState extends State<BDRTaskDetailScreen> {
                               horizontal: 32,
                               vertical: 14,
                             ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
                           icon: const Icon(Icons.play_arrow),
                           label: const Text(
@@ -139,27 +161,31 @@ class _BDRTaskDetailScreenState extends State<BDRTaskDetailScreen> {
                   : ListView(
                     key: const ValueKey('exercise_started'),
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            "Tiempo restante:",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.white70,
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        child: Row(
+                          key: ValueKey(_remainingSeconds),
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "⏰ Tiempo restante:",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white70,
+                              ),
                             ),
-                          ),
-                          Text(
-                            _formatTime(_remainingSeconds),
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.greenAccent,
-                              fontWeight: FontWeight.bold,
+                            Text(
+                              _formatTime(_remainingSeconds),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.greenAccent,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 20),
                       Text(
                         widget.instruction,
                         style: textTheme.bodyLarge?.copyWith(
@@ -168,7 +194,7 @@ class _BDRTaskDetailScreenState extends State<BDRTaskDetailScreen> {
                       ),
                       const SizedBox(height: 24),
                       const Text(
-                        'Escribe tu reflexión:',
+                        '📝 Escribe tu reflexión:',
                         style: TextStyle(fontSize: 14, color: Colors.white),
                       ),
                       const SizedBox(height: 12),
@@ -190,8 +216,9 @@ class _BDRTaskDetailScreenState extends State<BDRTaskDetailScreen> {
                       ),
                       const SizedBox(height: 32),
                       Center(
-                        child: ElevatedButton(
+                        child: ElevatedButton.icon(
                           onPressed: _completeTask,
+                          icon: const Icon(Icons.check_circle_outline),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,
                             padding: const EdgeInsets.symmetric(
@@ -202,7 +229,7 @@ class _BDRTaskDetailScreenState extends State<BDRTaskDetailScreen> {
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                          child: const Text(
+                          label: const Text(
                             'Completar',
                             style: TextStyle(fontSize: 14),
                           ),
