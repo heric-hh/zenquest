@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zenquest/src/config/theme/colors/app_colors.dart';
 
 class BDRTaskDetailScreen extends StatefulWidget {
   final String title;
@@ -23,6 +24,9 @@ class _BDRTaskDetailScreenState extends State<BDRTaskDetailScreen> {
   late final Stopwatch _stopwatch;
 
   @override
+  /// Initializes the state of the widget.
+  /// This function is called when the widget is inserted into the tree.
+  /// It initializes the stopwatch to zero.
   void initState() {
     super.initState();
     _stopwatch = Stopwatch();
@@ -55,7 +59,6 @@ class _BDRTaskDetailScreenState extends State<BDRTaskDetailScreen> {
   }
 
   void _completeTask() {
-    // Aquí podrías guardar los datos o navegar a otra pantalla
     showDialog(
       context: context,
       builder:
@@ -84,96 +87,129 @@ class _BDRTaskDetailScreenState extends State<BDRTaskDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       backgroundColor: const Color(0xFF121224),
       appBar: AppBar(
         backgroundColor: const Color(0xFF1B1E3D),
         title: Text(
           widget.title,
-          style: const TextStyle(fontSize: 12, color: Colors.white),
+          style: const TextStyle(fontSize: 16, color: Colors.white),
         ),
         centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        child: ListView(
-          children: [
-            Text(
-              widget.description,
-              style: const TextStyle(fontSize: 10, color: Colors.white70),
-            ),
-            const SizedBox(height: 16),
-            !_exerciseStarted
-                ? ElevatedButton(
-                  onPressed: _startExercise,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple,
-                  ),
-                  child: const Text(
-                    'Iniciar Ejercicio',
-                    style: TextStyle(fontSize: 10),
-                  ),
-                )
-                : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Tiempo restante: ${_formatTime(_remainingSeconds)}",
-                      style: const TextStyle(
-                        fontSize: 10,
-                        color: Colors.greenAccent,
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          child:
+              !_exerciseStarted
+                  ? Column(
+                    key: const ValueKey('initial_state'),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.description,
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: Colors.white70,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      widget.instruction,
-                      style: const TextStyle(
-                        fontSize: 10,
-                        color: Colors.white70,
+                      const Spacer(),
+                      Center(
+                        child: ElevatedButton.icon(
+                          onPressed: _startExercise,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.secondaryColor,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 32,
+                              vertical: 14,
+                            ),
+                          ),
+                          icon: const Icon(Icons.play_arrow),
+                          label: const Text(
+                            'Iniciar Ejercicio',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Escribe tu reflexión:',
-                      style: TextStyle(fontSize: 10, color: Colors.white),
-                    ),
-                    const SizedBox(height: 8),
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1B1E3D),
-                        borderRadius: BorderRadius.circular(8),
+                      const SizedBox(height: 32),
+                    ],
+                  )
+                  : ListView(
+                    key: const ValueKey('exercise_started'),
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Tiempo restante:",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white70,
+                            ),
+                          ),
+                          Text(
+                            _formatTime(_remainingSeconds),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.greenAccent,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                      child: TextField(
-                        controller: _reflectionController,
-                        maxLines: 6,
-                        style: const TextStyle(
+                      const SizedBox(height: 16),
+                      Text(
+                        widget.instruction,
+                        style: textTheme.bodyLarge?.copyWith(
                           color: Colors.white,
-
-                          fontSize: 10,
-                        ),
-                        decoration: const InputDecoration.collapsed(
-                          hintText: "Escribe aquí...",
-                          hintStyle: TextStyle(color: Colors.white54),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 24),
-                    Center(
-                      child: ElevatedButton(
-                        onPressed: _completeTask,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
+                      const SizedBox(height: 24),
+                      const Text(
+                        'Escribe tu reflexión:',
+                        style: TextStyle(fontSize: 14, color: Colors.white),
+                      ),
+                      const SizedBox(height: 12),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1B1E3D),
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Text(
-                          'Completar',
-                          style: TextStyle(fontSize: 10),
+                        padding: const EdgeInsets.all(12),
+                        child: TextField(
+                          controller: _reflectionController,
+                          maxLines: 6,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration.collapsed(
+                            hintText: "Escribe aquí tu experiencia...",
+                            hintStyle: TextStyle(color: Colors.white54),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-          ],
+                      const SizedBox(height: 32),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: _completeTask,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 32,
+                              vertical: 14,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text(
+                            'Completar',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
         ),
       ),
     );

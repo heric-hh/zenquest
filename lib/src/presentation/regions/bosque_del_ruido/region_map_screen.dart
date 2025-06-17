@@ -120,7 +120,7 @@ class RegionMapScreen extends StatelessWidget {
         backgroundColor: const Color(0xFF1B1E3D),
         title: const Text(
           'Camino del Silencio',
-          style: TextStyle(fontSize: 12, color: Colors.white),
+          style: TextStyle(fontSize: 16, color: Colors.white),
         ),
         centerTitle: true,
       ),
